@@ -311,12 +311,13 @@ void ADXL362_FifoSetup(unsigned char  mode,
                        unsigned char  enTempRead)
 {
     unsigned char writeVal = 0;
+    unsigned char ah = ( waterMarkLvl >> 9 ) & 0x1 ? ADXL362_FIFO_CTL_AH : 0;
 
     writeVal = ADXL362_FIFO_CTL_FIFO_MODE(mode) |
                (enTempRead * ADXL362_FIFO_CTL_FIFO_TEMP) |
-               ADXL362_FIFO_CTL_AH;
+               ah;
     ADXL362_SetRegisterValue(writeVal, ADXL362_REG_FIFO_CTL, 1);
-    ADXL362_SetRegisterValue(waterMarkLvl, ADXL362_REG_FIFO_SAMPLES, 2);
+    ADXL362_SetRegisterValue(waterMarkLvl, ADXL362_REG_FIFO_SAMPLES & 0xFF, 1);
 }
 
 /***************************************************************************//**
